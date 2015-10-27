@@ -2,6 +2,7 @@ package ca.ualberta.ssrg.movies;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import ca.ualberta.ssrg.androidelasticsearch.R;
@@ -99,13 +102,18 @@ public class MainActivity extends Activity {
 	 */
 	public void search(View view) {
 		movies.clear();
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				EditText editText = (EditText) (findViewById(R.id.editText1));
 
-		// TODO: Extract search query from text view
-		
-		// TODO: Run the search thread
-		
+				SearchThread searchThread = new SearchThread(editText.getText().toString());
+				searchThread.start();
+			}
+		};
+		runnable.run();
+		notifyUpdated();
 	}
-	
 	/**
 	 * Starts activity with details for a movie
 	 * @param movieId Movie id
